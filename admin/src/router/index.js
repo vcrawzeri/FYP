@@ -1,0 +1,136 @@
+import { createRouter, createWebHistory } from 'vue-router';
+import AppLayout from '../components/AppLayout.vue';
+import store from '../store';
+import Customers from '../views/Customers/Customers.vue';
+import CustomerView from '../views/Customers/CustomerView.vue';
+import Dashboard from '../views/Dashboard.vue';
+import Login from '../views/Login.vue';
+import NotFound from '../views/NotFound.vue';
+import Orders from '../views/Orders/Orders.vue';
+import OrderView from '../views/Orders/OrderView.vue';
+import Products from '../views/Products/Products.vue';
+import CustomersReport from '../views/Reports/CustomersReport.vue';
+import OrdersReport from '../views/Reports/OrdersReport.vue';
+import Report from '../views/Reports/Report.vue';
+import RequestPassword from '../views/RequestPassword.vue';
+import ResetPassword from '../views/ResetPassword.vue';
+import Users from '../views/Users/Users.vue';
+
+const routes = [
+    {
+        path: '/app',
+        name: 'app',
+        component: AppLayout,
+        meta: {
+            requiresAuth: true,
+        },
+        children: [
+            {
+                path: 'dashboard',
+                name: 'app.dashboard',
+                component: Dashboard,
+            },
+            {
+                path: 'products',
+                name: 'app.products',
+                component: Products,
+            },
+            {
+                path: 'users',
+                name: 'app.users',
+                component: Users,
+            },
+            {
+                path: 'customers',
+                name: 'app.customers',
+                component: Customers,
+            },
+            {
+                path: 'customers/:id',
+                name: 'app.customers.view',
+                component: CustomerView,
+            },
+            {
+                path: 'orders',
+                name: 'app.orders',
+                component: Orders,
+            },
+            {
+                path: 'orders/:id',
+                name: 'app.orders.view',
+                component: OrderView,
+            },
+            {
+                path: '/report',
+                name: 'reports',
+                component: Report,
+                meta: {
+                    requiresAuth: true,
+                },
+                children: [
+                    {
+                        path: 'orders',
+                        name: 'reports.orders',
+                        component: OrdersReport,
+                    },
+                    {
+                        path: 'customers',
+                        name: 'reports.customers',
+                        component: CustomersReport,
+                    },
+                ],
+            },
+        ],
+    },
+
+    {
+        path: '/login',
+        name: 'login',
+        component: Login,
+        meta: {
+            requiresGuest: true,
+        },
+    },
+    {
+        path: '/request-password',
+        name: 'requestPassword',
+        component: RequestPassword,
+        meta: {
+            requiresGuest: true,
+        },
+    },
+    {
+        path: '/reset-password/:token',
+        name: 'resetPassword',
+        component: ResetPassword,
+        meta: {
+            requiresGuest: true,
+        },
+    },
+    {
+        path: '/:pathMatch(.*)',
+        name: 'notfound',
+        component: NotFound,
+    },
+];
+
+const router = createRouter({
+    history: createWebHistory(),
+    routes,
+});
+
+router.beforeEach((to, from, next) => {
+    // If the route needs auth but user has no token → redirect to login
+    if (to.meta.requiresAuth && !store.state.user.token) {
+        next({ name: 'login' });
+    }
+
+    // If the route requires guest and user is logged in → redirect to dashboard
+    else if (to.meta.requiresGuest && store.state.user.token) {
+        next({ name: 'app.dashboard' });
+    } else {
+        next(); // proceed
+    }
+});
+
+export default router;

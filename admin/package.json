@@ -1,0 +1,32 @@
+{
+    "name": "admin",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+        "dev": "vite --port=3001",
+        "build": "vite build",
+        "preview": "vite preview"
+    },
+    "dependencies": {
+        "@heroicons/vue": "^1.0.6",
+        "@tailwindcss/vite": "^4.1.8",
+        "axios": "^1.10.0",
+        "chart.js": "^4.5.1",
+        "vue": "^3.5.13",
+        "vue-chartjs": "^5.3.2",
+        "vue-router": "^4.0.13",
+        "vuex": "^4.0.2"
+    },
+    "devDependencies": {
+        "@headlessui/vue": "^1.7.23",
+        "@tailwindcss/forms": "^0.5.10",
+        "@tailwindcss/postcss": "^4.1.8",
+        "@vitejs/plugin-vue": "^5.2.3",
+        "autoprefixer": "^10.4.21",
+        "postcss": "^8.5.4",
+        "sass": "^1.89.1",
+        "tailwindcss": "^4.1.8",
+        "vite": "^6.3.5"
+    }
+}
