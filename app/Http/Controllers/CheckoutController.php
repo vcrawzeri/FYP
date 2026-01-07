@@ -113,13 +113,13 @@ class CheckoutController extends Controller
             }
 
             $payment = Payment::query()
-            ->where(['session_id' => $session_id])
-            ->whereIn('status',[PaymentStatus::Pending , PaymentStatus::Paid])
-            ->first();
+                ->where(['session_id' => $session_id])
+                ->whereIn('status', [PaymentStatus::Pending, PaymentStatus::Paid])
+                ->first();
             if (!$payment) {
                 throw new NotFoundHttpException();
             }
-            if ($payment->status == PaymentStatus::Pending){
+            if ($payment->status == PaymentStatus::Pending) {
                 $this->updateOrderAndSession($payment);
             }
 
@@ -195,7 +195,7 @@ class CheckoutController extends Controller
             );
         } catch (\UnexpectedValueException $e) {
             // Invalid payload
-            return response('',401);
+            return response('', 401);
         }
 
         if ($endpoint_secret) {
@@ -211,7 +211,7 @@ class CheckoutController extends Controller
             } catch (\Stripe\Exception\SignatureVerificationException $e) {
                 // Invalid signature
                 echo '⚠️  Webhook error while validating signature.';
-                return response('',402);
+                return response('', 402);
             }
         }
 
@@ -240,7 +240,7 @@ class CheckoutController extends Controller
             default:
                 echo 'Received unknown event type ' . $event->type;
         }
-        return response('',200);
+        return response('', 200);
     }
 
     private function updateOrderAndSession(Payment $payment)
@@ -256,11 +256,8 @@ class CheckoutController extends Controller
         $order->status = OrderStatus::Paid;
         $order->update();
 
-        $adminUsers = User::where('is_admin',1)->get();
+        $adminUsers = User::where('is_admin', 1)->get();
 
         Mail::to($adminUsers)->send(new NewOrderEmail($order));
     }
 }
-
-
-

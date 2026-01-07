@@ -248,7 +248,7 @@ function getForPage(ev, link) {
     getCustomers(link.url);
 }
 
-function sortCustomer(field) {
+function sortCustomers(field) {
     if (sortField.value === field) {
         sortDirection.value = sortDirection.value === 'asc' ? 'desc' : 'asc';
     } else {

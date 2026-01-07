@@ -26,7 +26,7 @@ class OrderResource extends JsonResource
             'id' => $this->id,
             'status' => $this->status,
             'total_price' => $this->total_price,
-            'items' => $this->items->map(fn($item)=>[
+            'items' => $this->items->map(fn($item) => [
                 'id' => $item->id,
                 'unit_price' => $item->unit_price,
                 'quantity' => $item->quantity,
@@ -54,7 +54,7 @@ class OrderResource extends JsonResource
                     'state' => $shipping->state,
                     'zipcode' => $shipping->zipcode,
                     'country' => $shipping->country->name,
-                ]:null,
+                ] : null,
 
 
                 'billingAddress' => $billing ? [
@@ -65,9 +65,9 @@ class OrderResource extends JsonResource
                     'state' => $billing->state,
                     'zipcode' => $billing->zipcode,
                     'country' => $billing->country->name,
-                ]:null,
+                ] : null,
 
-            ]:null,
+            ] : null,
             'created_at' => (new \DateTime($this->created_at))->format('Y-m-d H:i:s'),
             'updated_at' => (new \DateTime($this->updated_at))->format('Y-m-d H:i:s'),
         ];

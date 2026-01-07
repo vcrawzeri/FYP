@@ -24,13 +24,22 @@ class UserController extends Controller
         $perPage = request('per_page', 10);
         $sortField = request('sort_field', 'updated_at');
         $sortDirection = request('sort_direction', 'desc');
+        $search = request('search'); // get the search query
 
         $query = User::query();
+
+        // Apply search filter
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
         $query->orderBy($sortField, $sortDirection);
 
         return UserResource::collection($query->paginate($perPage));
     }
-
 
     /**
      * Store a newly created resource in storage.
@@ -41,7 +50,7 @@ class UserController extends Controller
         $data = $request->validated();
         $data['is_admin'] = true;
         $data['email_verified_at'] = date('Y-m-d H:i:s');
-        $data['password'] =Hash::make($data['password']);
+        $data['password'] = Hash::make($data['password']);
         $data['created_by'] = $request->user()->id;
         $data['updated_by'] = $request->user()->id;
 
@@ -58,7 +67,7 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, User $user)
     {
         $data = $request->validated();
-        if (!empty($data['password'])){
+        if (!empty($data['password'])) {
             $data['password'] = Hash::make($data['password']);
         }
 
@@ -87,6 +96,4 @@ class UserController extends Controller
     {
         return new UserResource($user);
     }
-
-
 }

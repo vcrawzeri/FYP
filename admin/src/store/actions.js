@@ -2,15 +2,18 @@
 import axiosClient from '../axios';
 
 export function getUser({ commit }, id) {
-  return axiosClient.get(`/users/${id}`);
+    return axiosClient.get(`/users/${id}`);
 }
-
 
 export function getCurrentUser({ commit }) {
     return axiosClient.get('/user').then((response) => {
         commit('setUser', response.data);
         return response;
     });
+}
+
+export function deleteUser({ commit }, userId) {
+    return axiosClient.delete(`/users/${userId}`);
 }
 
 export function login({ commit }, data) {
@@ -35,11 +38,10 @@ export function logout({ commit }) {
         });
 }
 
-export function getCountries({commit}){
-   return axiosClient.get('countries')
-        .then(({data})=>{
-            commit('setCountries',data)
-        })
+export function getCountries({ commit }) {
+    return axiosClient.get('countries').then(({ data }) => {
+        commit('setCountries', data);
+    });
 }
 
 export function getProducts({ commit }, { url = null, search = '', perPage = 10, sort_field, sort_direction } = {}) {
@@ -63,11 +65,6 @@ export function getProducts({ commit }, { url = null, search = '', perPage = 10,
         });
 }
 
-
-
-
-
-
 export function getOrders({ commit, state }, { url = null, search = '', perPage = 10, sort_field, sort_direction } = {}) {
     commit('setOrders', [true]);
     url = url || '/orders';
@@ -89,11 +86,9 @@ export function getOrders({ commit, state }, { url = null, search = '', perPage 
         });
 }
 
-export function getProduct({commit}, id) {
+export function getProduct({ commit }, id) {
     return axiosClient.get(`/product/${id}`);
 }
-
-
 
 export function getOrder({ commit }, id) {
     return axiosClient.get(`/orders/${id}`);
@@ -153,7 +148,6 @@ export function updateUser({ commit }, user) {
         });
 }
 
-
 export function getCustomers({ commit }, { url = null, search = '', perPage = 10, sort_field, sort_direction } = {}) {
     commit('setCustomers', [true]);
     url = url || '/customers';
@@ -193,11 +187,9 @@ export function updateCustomer({ commit }, customer) {
         });
 }
 
-export function deleteCustomer({commit},customer){
-    return axiosClient.delete(`/customers/${user.customer}`,customer);
+export function deleteCustomer({ commit }, customerId) {
+    return axiosClient.delete(`/customers/${customerId}`);
 }
-
-
 
 /**
  * Update Product
@@ -220,12 +212,6 @@ export function updateProduct({ commit }, product) {
         headers: { 'Content-Type': 'multipart/form-data' },
     });
 }
-
-
-
-
-
-
 
 /**
  * Delete Product
